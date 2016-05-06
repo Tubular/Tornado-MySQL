@@ -73,6 +73,7 @@ UNSIGNED_INT64_COLUMN = 254
 DEFAULT_CHARSET = 'latin1'
 
 MAX_PACKET_LEN = 2**24-1
+MAX_INFILE_BUFFER_SIZE = 2**17 # 128k
 
 
 def dump_packet(data):
@@ -1249,7 +1250,7 @@ class LoadLocalFile(object):
             yield self.handle_chunk(None)
             raise OperationalError(1017, "Can't find file '{0}'".format(self.filename))
         else:
-            stream = iostream.PipeIOStream(fd, max_buffer_size=MAX_PACKET_LEN)
+            stream = iostream.PipeIOStream(fd, max_buffer_size=MAX_INFILE_BUFFER_SIZE)
             stream.read_until_close(streaming_callback=self.handle_chunk, callback=self.handle_chunk)
             stream.close()
 
